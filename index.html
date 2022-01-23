@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<form action="#">
+			<input class="message" type="text" />
+			<input type="submit" />
+		</form>
+		<ul class="container"></ul>
+		<script src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+		<script>
+			const socket = io("localhost:3000")
+			const form = document.querySelector("form")
+			const input = document.querySelector(".message")
+			const container = document.querySelector(".container")
+			form.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if (input.value) {
+					socket.emit("message", input.value)
+					input.value = ""
+				}
+			})
+			socket.on("message", (message) => {
+				const item = document.createElement("li")
+				item.innerText = message
+				container.appendChild(item)
+			})
+		</script>
+	</body>
+</html>

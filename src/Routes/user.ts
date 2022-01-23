@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs"
 import process from "process"
 import { User } from "../Models/User"
 import { validationResult } from "express-validator"
-import { userValidator } from "./../Validator/userValidator"
+import { userValidator } from "../Validator/userValidator"
 
 // -------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------
 const generateSignedToken = (user: User) => {
@@ -102,10 +102,8 @@ router.post("/auth", async (req, res) => {
 	}
 })
 
-router.get("/users/me", async (req, res) => {
-	console.log(req.user)
-	// @ts-ignore
-	const user = await User.findOne({ where: { id: req.user.id } })
+router.get("/users/me", async (req: express.Request, res: express.Response) => {
+	const user = req.user
 
 	res.json({ data: user })
 })
